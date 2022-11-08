@@ -1,9 +1,5 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-
-# All rights reserved.
-
-# This source code is licensed under the license found in the
-# LICENSE file in the root directory of this source tree.
+# Secondary development based on ConvNeXt.git:
+# https://github.com/facebookresearch/ConvNeXt.git
 
 
 import argparse
@@ -36,7 +32,7 @@ import utils
 import setproctitle
 # setproctitle.setproctitle("可以杀死本进程")
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '0,2'
+os.environ["CUDA_VISIBLE_DEVICES"] = '2'
 
 # for model create
 from models import *
