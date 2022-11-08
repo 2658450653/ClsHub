@@ -1,0 +1,26 @@
+python run_with_submitit.py --nodes 1 --ngpus 3 \
+--model convnext_tiny --drop_path 0.1 \
+--batch_size 32 --lr 4e-3 --update_freq 1 \
+--model_ema true --model_ema_eval true \
+--data_path /DATA/DATA/lzw/data/ScienceDataBank_split/ \
+--job_dir ./output
+
+python -m torch.distributed.launch --nproc_per_node=3 main.py \
+--model adacanet_base --drop_path 0.1 \
+--batch_size 32 --lr 4e-3 --update_freq 4 \
+--model_ema true --model_ema_eval true \
+--data_path /DATA/DATA/lzw/data/ScienceDataBank_split/ \
+--output_dir ./output/mass/convnext_base1
+
+python -m torch.distributed.launch --nproc_per_node=1 main.py \
+--model mohs_resnext50_32x4d --drop_path 0.1 \
+--batch_size 32 --lr 4e-3 --update_freq 4 \
+--model_ema true --model_ema_eval true \
+--data_path /DATA/DATA/lzw/data/6C_train_split_extend/ \
+--output_dir ./output/rocks_extend/mohs_resnext50_32x4d
+
+python -m torch.distributed.launch --nproc_per_node=3 main.py \
+--model convnext_base --eval true \
+--resume ./output/convnext_base/checkpoint-best.pth \
+--input_size 224 --drop_path 0.2 \
+--data_path /DATA/DATA/lzw/data/ScienceDataBank_split/
